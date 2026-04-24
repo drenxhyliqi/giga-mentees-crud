@@ -12,8 +12,8 @@ A command-line tool that manages GigaAcademy mentees and their assessment scores
 
 ```bash
 # 1. Clone the repo and enter the folder
-git clone https://github.com/drenxhyliqi/gigahomework.git
-cd gigahomework
+git clone https://github.com/drenxhyliqi/giga-mentees-curd.git
+cd giga-mentees-crud
 
 # 2. Copy the env file
 cp .env.example .env
@@ -42,7 +42,7 @@ python app.py
 ```bash
 # Mentee management
 python app.py mentee list
-python app.py mentee add --name "Ardit Berisha" --email ardit@email.com --cohort B5
+python app.py mentee add --name "John Doe" --email john@email.com --cohort B5
 python app.py mentee update --id 1 --cohort B6
 python app.py mentee delete --id 1
 
@@ -59,6 +59,40 @@ bash tasks.sh up      # start the database
 bash tasks.sh down    # stop the database
 bash tasks.sh seed    # load sample data
 bash tasks.sh test    # quick connection test
+```
+
+## Testing the app
+
+Once setup is complete, run through these commands to verify everything works:
+
+```bash
+# 1. Add three mentees
+python app.py mentee add --name "John Doe" --email john@test.com --cohort B5
+python app.py mentee add --name "Filan Fisteku" --email filan@test.com --cohort B5
+python app.py mentee add --name "Jane Doe" --email jane@test.com --cohort B5
+
+# 2. List all mentees — should show 3 rows sorted by name
+python app.py mentee list
+
+# 3. Update a cohort
+python app.py mentee update --id 1 --cohort B6
+
+# 4. Delete a mentee
+python app.py mentee delete --id 1
+
+# 5. Try adding a duplicate email — should show a friendly error
+python app.py mentee add --name "Test" --email filan@test.com --cohort B5
+
+# 6. Try updating an ID that doesn't exist — should show a friendly error
+python app.py mentee update --id 9999 --cohort B6
+
+# 7. Reports (requires seed data with assessment scores)
+python app.py report averages
+python app.py report below --threshold 85
+python app.py report assessments
+
+# 8. Interactive menu
+python app.py
 ```
 
 ## Stopping / tearing down
@@ -88,7 +122,7 @@ Part C was the part where I used Claude AI the most. Even though I used AI throu
 
 > "What is the actual reason we're using Docker here instead of just installing PostgreSQL directly on the machine?"
 
-> "Why are we using an INNER JOIN here instead of a LEFT JOIN — what would change in the results if we switched to LEFT JOIN?"
+> "What happens if I use an LEFT JOIN here instead of a INNER JOIN?
 
 > "Having all the user input logic inside `elif` blocks in `run_menu()` doesn't feel clean. Is there a better way to structure this without changing the core CRUD functions?"
 
